@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import evrLogo from "@/assets/evr-logo.png";
 
 export const Route = createFileRoute("/")({
   component: LandingPage,
@@ -9,6 +10,7 @@ function LandingPage() {
     <div className="min-h-screen bg-white text-neutral-950">
       <Nav />
       <Hero />
+      <ConnectorVisual />
       <StatsGrid />
       <HowItWorks />
       <Footer />
@@ -16,19 +18,9 @@ function LandingPage() {
   );
 }
 
-function Brandmark() {
+function Brandmark({ className = "h-6 w-6" }: { className?: string }) {
   return (
-    <svg viewBox="0 0 24 24" fill="none" className="h-5 w-5">
-      <path d="M3 5 H17" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-      <path
-        d="M3 12 Q9 8 15 12 T21 12"
-        stroke="#dc6b3f"
-        strokeWidth="2"
-        strokeLinecap="round"
-        fill="none"
-      />
-      <path d="M3 19 H13" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-    </svg>
+    <img src={evrLogo} alt="EvolveRun" className={`${className} object-contain`} />
   );
 }
 
