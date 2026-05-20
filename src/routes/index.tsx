@@ -11,7 +11,6 @@ function LandingPage() {
       <Nav />
       <Hero />
       <ConnectorVisual />
-      <StatsGrid />
       <HowItWorks />
       <Footer />
     </div>
