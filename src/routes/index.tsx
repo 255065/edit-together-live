@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import evrLogo from "@/assets/evr-logo.png";
 
 export const Route = createFileRoute("/")({
   component: LandingPage,
@@ -9,6 +10,7 @@ function LandingPage() {
     <div className="min-h-screen bg-white text-neutral-950">
       <Nav />
       <Hero />
+      <ConnectorVisual />
       <StatsGrid />
       <HowItWorks />
       <Footer />
@@ -16,19 +18,9 @@ function LandingPage() {
   );
 }
 
-function Brandmark() {
+function Brandmark({ className = "h-6 w-6" }: { className?: string }) {
   return (
-    <svg viewBox="0 0 24 24" fill="none" className="h-5 w-5">
-      <path d="M3 5 H17" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-      <path
-        d="M3 12 Q9 8 15 12 T21 12"
-        stroke="#dc6b3f"
-        strokeWidth="2"
-        strokeLinecap="round"
-        fill="none"
-      />
-      <path d="M3 19 H13" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-    </svg>
+    <img src={evrLogo} alt="EvolveRun" className={`${className} object-contain`} />
   );
 }
 
@@ -134,6 +126,91 @@ function StatsGrid() {
         </div>
       ))}
     </section>
+  );
+}
+
+function ConnectorVisual() {
+  return (
+    <section className="relative mx-auto max-w-[1100px] overflow-hidden px-8 py-20">
+      <div className="mb-14 text-center">
+        <div className="text-[13px] font-medium uppercase tracking-wider text-[#dc6b3f]">
+          The bridge
+        </div>
+        <h2 className="evr-headline mt-3 text-[36px] tracking-[-0.025em]">
+          Your data, <span className="evr-emphasis">your AI.</span>
+        </h2>
+        <p className="mx-auto mt-3 max-w-md text-[15px] text-neutral-600">
+          EvolveRun sits between your training feed and the chat you already use.
+        </p>
+      </div>
+
+      <div className="relative mx-auto flex h-[260px] max-w-[860px] items-center justify-between">
+        {/* Blurred horizontal bands */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-x-0 top-1/2 h-[160px] -translate-y-1/2 blur-2xl opacity-80"
+          style={{
+            background:
+              "linear-gradient(90deg, rgba(252,82,0,0.55) 0%, rgba(252,82,0,0.25) 18%, rgba(99,102,241,0.45) 40%, rgba(99,102,241,0.5) 60%, rgba(220,107,63,0.35) 82%, rgba(220,107,63,0.6) 100%)",
+          }}
+        />
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-x-[8%] top-1/2 h-[60px] -translate-y-1/2 blur-xl opacity-70"
+          style={{
+            background:
+              "linear-gradient(90deg, #fc5200 0%, rgba(252,82,0,0.2) 25%, rgba(168,85,247,0.4) 50%, rgba(99,102,241,0.3) 75%, #dc6b3f 100%)",
+          }}
+        />
+
+        {/* Strava tile (left) */}
+        <Tile label="Strava">
+          <svg viewBox="0 0 24 24" className="h-12 w-12" fill="#fc5200">
+            <path d="M15.387 17.944l-2.089-4.116h-3.065L15.387 24l5.15-10.172h-3.066m-7.008-5.599l2.836 5.598h4.172L10.463 0l-7 13.828h4.169" />
+          </svg>
+        </Tile>
+
+        {/* EvolveRun centerpiece */}
+        <Tile label="EvolveRun" highlight>
+          <img src={evrLogo} alt="EvolveRun" className="h-14 w-14 object-contain" />
+        </Tile>
+
+        {/* AI tile (right) */}
+        <Tile label="Claude · GPT · Gemini">
+          <svg viewBox="0 0 24 24" className="h-12 w-12" fill="none" stroke="#dc6b3f" strokeWidth="1.8" strokeLinecap="round">
+            <circle cx="12" cy="12" r="2" fill="#dc6b3f" />
+            <path d="M12 4v3M12 17v3M4 12h3M17 12h3M6.3 6.3l2.1 2.1M15.6 15.6l2.1 2.1M17.7 6.3l-2.1 2.1M8.4 15.6l-2.1 2.1" />
+          </svg>
+        </Tile>
+      </div>
+
+      <p className="mx-auto mt-10 max-w-md text-center text-[13px] text-neutral-500">
+        Encrypted tokens. Row-level security. You stay in control of what your AI sees.
+      </p>
+    </section>
+  );
+}
+
+function Tile({
+  children,
+  label,
+  highlight = false,
+}: {
+  children: React.ReactNode;
+  label: string;
+  highlight?: boolean;
+}) {
+  return (
+    <div className="relative z-10 flex flex-col items-center gap-3">
+      <div
+        className={`flex h-[112px] w-[112px] items-center justify-center rounded-2xl bg-white shadow-[0_10px_40px_-10px_rgba(0,0,0,0.15)] ring-1 ${
+          highlight ? "ring-[#dc6b3f]/40" : "ring-neutral-200/80"
+        }`}
+      >
+        {children}
+      </div>
+      <div className="text-[12px] font-medium text-neutral-700">{label}</div>
+    </div>
   );
 }
 
