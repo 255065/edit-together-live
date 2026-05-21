@@ -297,3 +297,192 @@ function Footer() {
     </footer>
   );
 }
+
+function ChatDemo() {
+  const months = [
+    { m: "Jan", pace: "5:23/km", bpm: 149, x: 12, y: 70 },
+    { m: "Feb", pace: "5:17/km", bpm: 147, x: 50, y: 50 },
+    { m: "Mar", pace: "5:08/km", bpm: 145, x: 88, y: 28 },
+  ];
+
+  return (
+    <section className="mx-auto max-w-[760px] px-6 pb-24">
+      <div className="rounded-[28px] border border-neutral-200 bg-[#f5f0e8] p-3 shadow-[0_24px_60px_-30px_rgba(60,40,20,0.35)]">
+        {/* window chrome */}
+        <div className="relative flex items-center justify-center rounded-t-[20px] bg-[#ece6dc] px-4 py-2.5">
+          <div className="absolute left-4 flex gap-1.5">
+            <span className="h-2.5 w-2.5 rounded-full bg-neutral-300" />
+            <span className="h-2.5 w-2.5 rounded-full bg-neutral-300" />
+            <span className="h-2.5 w-2.5 rounded-full bg-neutral-300" />
+          </div>
+          <span className="font-mono text-[11px] tracking-[0.2em] text-neutral-600">CLAUDE.AI</span>
+        </div>
+
+        <div className="space-y-3 p-4 md:p-6">
+          {/* greeting */}
+          <div className="flex items-center justify-center gap-3 py-3">
+            <ClaudeStar />
+            <span className="evr-headline text-[28px] tracking-[-0.02em]">Afternoon</span>
+          </div>
+
+          {/* user prompt card */}
+          <div className="rounded-2xl border border-neutral-200/80 bg-white p-5">
+            <p className="text-[14.5px] leading-relaxed text-neutral-900">
+              Compare my easy running pace trend this year with Jan, Feb, March pace and easy HR.
+            </p>
+            <div className="mt-5 flex items-center justify-between">
+              <span className="text-[12.5px] text-neutral-500">Sonnet 4.6</span>
+              <button className="flex h-8 w-8 items-center justify-center rounded-full bg-[#cc785c] text-white">
+                <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M12 19V5M5 12l7-7 7 7" />
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          {/* thinking pill */}
+          <div className="rounded-full border border-neutral-200/80 bg-[#ece6dc]/60 px-4 py-2 text-[12.5px] text-neutral-600">
+            Grouping easy runs by month and comparing pace to HR efficiency<span className="ml-1 tracking-widest text-neutral-400">. . .</span>
+          </div>
+
+          {/* tools card */}
+          <div className="rounded-2xl border border-neutral-200/80 bg-white p-5">
+            <div className="mb-4 flex items-center gap-2">
+              <span className="h-2 w-2 rounded-full bg-[#cc785c]" />
+              <span className="font-mono text-[11px] tracking-[0.18em] text-neutral-700">USING CHIRONA TOOLS</span>
+              <span className="ml-1 rounded-full border border-[#cc785c]/40 px-2 py-[2px] font-mono text-[10px] tracking-[0.15em] text-[#cc785c]">
+                CHIRONA
+              </span>
+            </div>
+
+            <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2">
+              <ToolChip source="STRAVA" name="get-strava-easy-runs" />
+              <ToolChip source="STRAVA" name="compare-strava-periods" />
+              <ToolChip source="STRAVA" name="chart-easy-pace-trend" />
+              <ToolChip source="COROS" name="get-coros-training-zones" />
+            </div>
+
+            <p className="mt-5 text-[13.5px] leading-relaxed text-neutral-700">
+              Claude is filtering your easy runs by month, charting pace against easy-run HR,
+              and using your zones to spot whether efficiency is improving.
+            </p>
+          </div>
+
+          {/* chart card */}
+          <div className="rounded-2xl border border-neutral-200/80 bg-white p-5">
+            <div className="flex items-center justify-between text-[12px] text-neutral-500">
+              <span>Easy runs</span>
+              <span>Jan – March</span>
+              <span>Pace vs HR</span>
+            </div>
+
+            <div className="relative mt-6 h-[180px]">
+              {/* grid lines */}
+              <div className="absolute inset-x-0 top-0 h-px bg-neutral-200" />
+              <div className="absolute inset-x-0 top-1/2 h-px bg-neutral-200" />
+              <div className="absolute inset-x-0 bottom-0 h-px bg-neutral-200" />
+
+              {/* trend line */}
+              <svg className="absolute inset-0 h-full w-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+                <polyline
+                  points={months.map((p) => `${p.x},${p.y}`).join(" ")}
+                  fill="none"
+                  stroke="#cc785c"
+                  strokeWidth="0.8"
+                  strokeLinecap="round"
+                />
+                {months.map((p, i) => (
+                  <circle key={i} cx={p.x} cy={p.y} r="1.4" fill="#cc785c" />
+                ))}
+              </svg>
+
+              {/* bars + labels */}
+              {months.map((p, i) => (
+                <div
+                  key={i}
+                  className="absolute flex flex-col items-center"
+                  style={{ left: `${p.x}%`, top: `${p.y}%`, transform: "translate(-50%,-50%)" }}
+                >
+                  <div className="absolute -top-6 whitespace-nowrap text-[12px] font-medium text-neutral-700">
+                    {p.pace}
+                  </div>
+                  <div className="h-[58px] w-[34px] rounded-md bg-[#8aa9ff]/80" />
+                  <div className="absolute top-[60%] whitespace-nowrap text-[12px] text-neutral-700">
+                    {p.bpm} bpm
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-4 flex justify-between px-1 text-[13px] text-neutral-700">
+              {months.map((p) => (
+                <span key={p.m}>{p.m}</span>
+              ))}
+            </div>
+
+            {/* metric grid */}
+            <div className="mt-6 grid grid-cols-1 gap-2.5 sm:grid-cols-2">
+              <MetricCard label="JAN" value="5:23/km at 149 bpm" />
+              <MetricCard label="FEB" value="5:17/km at 147 bpm" />
+              <MetricCard label="MAR" value="5:08/km at 145 bpm" />
+              <MetricCard label="TREND" value="Faster pace, lower easy HR" />
+            </div>
+
+            <InsightBlock label="WHAT CHANGED">
+              Your easy-run pace improved each month while average easy HR dropped, which
+              usually points to stronger aerobic efficiency rather than simply running harder.
+            </InsightBlock>
+            <InsightBlock label="HOW CLAUDE KNOWS">
+              It grouped easy runs using your training zones, compared month-by-month pace
+              and HR, and then summarized the direction of change for you.
+            </InsightBlock>
+          </div>
+
+          <p className="px-1 pt-2 text-[13.5px] leading-relaxed text-neutral-700">
+            Your easy pace trend is moving the right way: from roughly 5:23/km in January
+            to 5:08/km in March, while easy HR fell from about 149 bpm to 145 bpm, which
+            suggests improving aerobic efficiency.
+          </p>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function ClaudeStar() {
+  return (
+    <svg viewBox="0 0 24 24" className="h-6 w-6" fill="#cc785c">
+      <path d="M12 2l1.6 6.4L20 10l-6.4 1.6L12 18l-1.6-6.4L4 10l6.4-1.6L12 2z" />
+    </svg>
+  );
+}
+
+function ToolChip({ source, name }: { source: string; name: string }) {
+  return (
+    <div className="flex items-center gap-2 rounded-full border border-neutral-200 bg-[#fdf6f1] px-2 py-1.5">
+      <span className="rounded-full bg-white px-2 py-[2px] font-mono text-[10px] tracking-[0.15em] text-[#cc785c]">
+        {source}
+      </span>
+      <span className="font-mono text-[12px] text-neutral-800">{name}</span>
+      <span className="ml-auto text-neutral-400">›</span>
+    </div>
+  );
+}
+
+function MetricCard({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="rounded-xl border border-neutral-200 bg-white px-4 py-3">
+      <div className="font-mono text-[10.5px] tracking-[0.18em] text-neutral-500">{label}</div>
+      <div className="mt-1 text-[13.5px] font-medium text-neutral-900">{value}</div>
+    </div>
+  );
+}
+
+function InsightBlock({ label, children }: { label: string; children: React.ReactNode }) {
+  return (
+    <div className="mt-3 rounded-xl border border-neutral-200 bg-[#f5f0e8]/70 px-4 py-3">
+      <div className="font-mono text-[10.5px] tracking-[0.18em] text-neutral-500">{label}</div>
+      <p className="mt-1.5 text-[13px] leading-relaxed text-neutral-700">{children}</p>
+    </div>
+  );
+}
