@@ -11,7 +11,6 @@ function LandingPage() {
       <Nav />
       <Hero />
       <ChatDemo />
-      <ConnectorVisual />
       <HowItWorks />
       <Footer />
     </div>
@@ -96,6 +95,7 @@ function Hero() {
             How it works ↓
           </a>
         </div>
+        <HeroConnector />
         <p className="mt-5 text-[12.5px] text-neutral-500">
           Works with Garmin, Apple Watch, Polar, COROS, Suunto and Wahoo — anything that auto-syncs to Strava.
         </p>
@@ -103,6 +103,49 @@ function Hero() {
     </section>
   );
 }
+
+function HeroConnector() {
+  return (
+    <div className="mx-auto mt-10 flex max-w-md items-center justify-center gap-4">
+      {/* Strava badge */}
+      <div className="flex items-center gap-2.5 rounded-full border border-neutral-200 bg-white px-4 py-2 shadow-[0_8px_24px_-12px_rgba(252,82,0,0.45)]">
+        <svg viewBox="0 0 24 24" className="h-5 w-5" fill="#fc5200">
+          <path d="M15.387 17.944l-2.089-4.116h-3.065L15.387 24l5.15-10.172h-3.066m-7.008-5.599l2.836 5.598h4.172L10.463 0l-7 13.828h4.169" />
+        </svg>
+        <span className="text-[13px] font-medium text-neutral-800">Strava</span>
+      </div>
+
+      {/* connecting band */}
+      <div className="relative h-[40px] flex-1">
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 rounded-full blur-2xl opacity-80"
+          style={{
+            background:
+              "linear-gradient(90deg, rgba(252,82,0,0.55) 0%, rgba(239,106,58,0.5) 50%, rgba(204,120,92,0.55) 100%)",
+          }}
+        />
+        <div
+          aria-hidden
+          className="absolute inset-x-0 top-1/2 h-[2px] -translate-y-1/2 rounded-full"
+          style={{
+            background: "linear-gradient(90deg, #fc5200 0%, #e07050 50%, #cc785c 100%)",
+            boxShadow: "0 0 14px rgba(240,110,70,0.55)",
+          }}
+        />
+      </div>
+
+      {/* Claude badge */}
+      <div className="flex items-center gap-2.5 rounded-full border border-neutral-200 bg-white px-4 py-2 shadow-[0_8px_24px_-12px_rgba(204,120,92,0.45)]">
+        <svg viewBox="0 0 24 24" className="h-5 w-5" fill="#cc785c">
+          <path d="M4.709 15.955l4.72-2.647.079-.23-.079-.128H9.2l-.79-.048-2.698-.073-2.339-.097-2.266-.122-.571-.121L0 11.784l.055-.352.48-.321.686.06 1.52.103 2.278.158 1.652.097 2.448.255h.389l.055-.157-.134-.098-.103-.097-2.358-1.596-2.552-1.688-1.336-.972-.724-.491-.364-.462-.158-1.008.656-.722.881.06.225.061.893.686 1.908 1.477 2.491 1.833.365.304.146-.103.018-.073-.164-.274-1.355-2.446-1.446-2.49-.644-1.032-.17-.619a2.97 2.97 0 01-.104-.729L6.283.134 6.696 0l.996.134.42.364.62 1.418 1.002 2.228 1.555 3.03.456.898.243.832.091.255h.158V9.01l.128-1.706.237-2.095.23-2.695.08-.76.376-.91.747-.492.584.28.48.685-.067.444-.286 1.851-.559 2.903-.364 1.942h.212l.243-.243.985-1.306 1.652-2.064.73-.82.85-.904.547-.431h1.033l.76 1.129-.34 1.166-1.064 1.347-.881 1.142-1.264 1.7-.79 1.36.073.11.188-.02 2.856-.606 1.543-.28 1.841-.315.833.388.091.395-.328.807-1.969.486-2.309.462-3.439.813-.042.03.049.061 1.549.146.662.036h1.622l3.02.225.79.522.474.638-.079.485-1.215.62-1.64-.389-3.829-.91-1.312-.329h-.182v.11l1.093 1.068 2.005 1.81 2.508 2.33.127.578-.322.455-.34-.049-2.204-1.657-.851-.747-1.926-1.62h-.128v.17l.444.649 2.345 3.521.122 1.08-.17.353-.608.213-.668-.122-1.374-1.925-1.415-2.167-1.143-1.943-.14.08-.674 7.254-.316.37-.729.28-.607-.461-.322-.747.322-1.476.389-1.924.315-1.53.286-1.9.17-.632-.012-.042-.14.018-1.434 1.967-2.18 2.945-1.726 1.845-.414.164-.717-.37.067-.662.401-.589 2.388-3.036 1.44-1.882.93-1.087-.006-.158h-.055L4.132 18.56l-1.13.146-.487-.456.061-.746.231-.243 1.908-1.312-.006.006z" />
+        </svg>
+        <span className="text-[13px] font-medium text-neutral-800">Claude</span>
+      </div>
+    </div>
+  );
+}
+
 
 function StatsGrid() {
   const cells = [
