@@ -66,20 +66,20 @@ function Hero() {
       <div className="relative z-10">
         <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-neutral-200 bg-white/90 py-1.5 pr-3.5 pl-1.5 text-[13px] text-neutral-600">
           <span className="rounded-full bg-neutral-950 px-2.5 py-[3px] text-[11px] font-medium tracking-wide text-white">
-            v1
+            Public Beta
           </span>
-          Simple AI endurance coach for Strava athletes
+          Connect Strava to ChatGPT &amp; Claude
         </div>
-        <h1 className="evr-headline mx-auto max-w-[14ch] bg-gradient-to-b from-neutral-950 to-neutral-700 bg-clip-text text-[clamp(48px,9vw,80px)] font-semibold leading-[1] tracking-[-0.045em] text-transparent">
-          Connect Strava.{" "}
+        <h1 className="evr-headline mx-auto max-w-[16ch] bg-gradient-to-b from-neutral-950 to-neutral-700 bg-clip-text text-[clamp(48px,9vw,80px)] font-semibold leading-[1] tracking-[-0.045em] text-transparent">
+          Understand your training with{" "}
           <em className="not-italic bg-gradient-to-br from-[#ff6b46] to-[#a855f7] bg-clip-text text-transparent">
-            Get answers.
+            AI.
           </em>
         </h1>
-        <p className="mx-auto mt-6 max-w-[36rem] text-[18.5px] leading-relaxed text-neutral-600">
-          EvolveRun connects your Strava account to Claude, ChatGPT, or Gemini — so the
-          AI you already use can answer real questions about <em className="not-italic">your</em>{" "}
-          training. Zone analysis, plan writing, recovery debriefs, all from your actual data.
+        <p className="mx-auto mt-6 max-w-[40rem] text-[18.5px] leading-relaxed text-neutral-600">
+          Connect your Strava account to ChatGPT, Claude, or Gemini and get deeper
+          insights into your workouts, recovery, fitness trends, and performance —
+          using your real training data.
         </p>
         <div className="mt-9 flex flex-wrap items-center justify-center gap-3">
           <Link
