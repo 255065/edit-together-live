@@ -10,6 +10,7 @@ function LandingPage() {
     <div className="min-h-screen bg-white text-neutral-950">
       <Nav />
       <Hero />
+      <ChatDemo />
       <ConnectorVisual />
       <HowItWorks />
       <Footer />
