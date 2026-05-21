@@ -11,7 +11,6 @@ function LandingPage() {
       <Nav />
       <Hero />
       <ChatDemo />
-      <ConnectorVisual />
       <HowItWorks />
       <Footer />
     </div>
