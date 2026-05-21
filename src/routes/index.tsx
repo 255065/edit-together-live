@@ -95,6 +95,7 @@ function Hero() {
             How it works ↓
           </a>
         </div>
+        <HeroConnector />
         <p className="mt-5 text-[12.5px] text-neutral-500">
           Works with Garmin, Apple Watch, Polar, COROS, Suunto and Wahoo — anything that auto-syncs to Strava.
         </p>
