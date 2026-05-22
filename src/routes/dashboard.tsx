@@ -238,7 +238,7 @@ function DashNav({ onSignOut }: { onSignOut: () => void }) {
         </Link>
         <nav className="hidden gap-8 text-[14px] text-neutral-700 md:flex">
           <Link to="/dashboard" className="font-medium text-neutral-950">Dashboard</Link>
-          <a href="#" className="hover:text-neutral-950">Training</a>
+          <Link to="/training" className="hover:text-neutral-950">Training</Link>
           <a href="#" className="hover:text-neutral-950">Account</a>
         </nav>
         <button
