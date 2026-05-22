@@ -63,7 +63,7 @@ function Hero() {
             "radial-gradient(circle at 30% 50%, rgba(255,107,70,0.12), transparent 50%), radial-gradient(circle at 70% 50%, rgba(168,85,247,0.10), transparent 50%)",
         }}
       />
-      <div className="relative z-10 grid items-center gap-12 lg:grid-cols-[1.05fr_1fr]">
+      <div className="relative z-10 grid items-center gap-12 md:grid-cols-[1.05fr_1fr]">
         {/* Left: copy + CTAs */}
         <div className="text-left">
           <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-neutral-200 bg-white/90 py-1.5 pr-3.5 pl-1.5 text-[13px] text-neutral-600">
