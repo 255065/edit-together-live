@@ -91,23 +91,31 @@ function DashboardPage() {
           />
         </div>
 
-        {/* Recent activities */}
-        <SectionHeader label="Recent activities" action="View all" />
-        <div className="mt-4 overflow-hidden rounded-2xl border border-neutral-200 bg-white">
-          {RECENT_ACTIVITIES.map((a, i) => (
-            <ActivityRow key={a.title} activity={a} divider={i > 0} />
-          ))}
-        </div>
-
-        {/* Weekly load */}
-        <SectionHeader label="Weekly load" action="38 km this week" />
-        <div className="mt-4 rounded-2xl border border-neutral-200 bg-white p-6">
-          <WeeklyLoadChart />
-          <div className="mt-4 flex items-center justify-between text-[13px] text-neutral-600">
-            <div>
-              <span className="font-semibold text-neutral-950">38 km</span> · 4 sessions
+        {/* Recent activities + Weekly load side-by-side */}
+        <div className="mt-16 grid grid-cols-1 gap-6 lg:grid-cols-2">
+          <div>
+            <SectionLabel>Recent activities</SectionLabel>
+            <div className="mt-4 overflow-hidden rounded-2xl border border-neutral-200 bg-white">
+              {RECENT_ACTIVITIES.map((a, i) => (
+                <ActivityRow key={a.title} activity={a} divider={i > 0} />
+              ))}
             </div>
-            <div className="text-emerald-700">+12% vs last week</div>
+          </div>
+
+          <div>
+            <div className="flex items-end justify-between">
+              <SectionLabel>Weekly load</SectionLabel>
+              <span className="text-[13px] font-medium text-[#dc6b3f]">38 km this week</span>
+            </div>
+            <div className="mt-4 rounded-2xl border border-neutral-200 bg-white p-6">
+              <WeeklyLoadChart />
+              <div className="mt-4 flex items-center justify-between text-[13px] text-neutral-600">
+                <div>
+                  <span className="font-semibold text-neutral-950">38 km</span> · 4 sessions
+                </div>
+                <div className="text-emerald-700">+12% vs last week</div>
+              </div>
+            </div>
           </div>
         </div>
 
