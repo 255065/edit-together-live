@@ -33,7 +33,7 @@ function Nav() {
         </Link>
         <nav className="hidden gap-6 text-[13.5px] text-neutral-600 md:flex">
           <a href="#how-it-works" className="hover:text-neutral-950">How it works</a>
-          <a href="#integrations" className="hover:text-neutral-950">Integrations</a>
+          <Link to="/integrations" className="hover:text-neutral-950">Integrations</Link>
           <a href="#pricing" className="hover:text-neutral-950">Pricing</a>
         </nav>
         <div className="flex items-center gap-3">
