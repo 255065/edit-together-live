@@ -36,12 +36,20 @@ function Nav() {
           <Link to="/integrations" className="hover:text-neutral-950">Integrations</Link>
           <a href="#pricing" className="hover:text-neutral-950">Pricing</a>
         </nav>
-        <Link
-          to="/signup"
-          className="rounded-md bg-neutral-950 px-3.5 py-1.5 text-[13px] font-medium text-white"
-        >
-          Get started
-        </Link>
+        <div className="flex items-center gap-2">
+          <Link
+            to="/login"
+            className="rounded-md px-3.5 py-1.5 text-[13px] font-medium text-neutral-700 hover:text-neutral-950"
+          >
+            Login
+          </Link>
+          <Link
+            to="/signup"
+            className="rounded-md bg-neutral-950 px-3.5 py-1.5 text-[13px] font-medium text-white"
+          >
+            Get started
+          </Link>
+        </div>
       </div>
     </header>
   );
