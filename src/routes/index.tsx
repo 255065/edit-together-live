@@ -32,7 +32,6 @@ function Nav() {
           EvolveRun
         </Link>
         <nav className="hidden gap-6 text-[13.5px] text-neutral-600 md:flex">
-          <a href="#how-it-works" className="hover:text-neutral-950">How it works</a>
           <Link to="/integrations" className="hover:text-neutral-950">Integrations</Link>
           <a href="#pricing" className="hover:text-neutral-950">Pricing</a>
         </nav>
@@ -44,7 +43,7 @@ function Nav() {
             to="/signup"
             className="rounded-md bg-neutral-950 px-3.5 py-1.5 text-[13px] font-medium text-white"
           >
-            Start free trial
+            Get started
           </Link>
         </div>
       </div>
