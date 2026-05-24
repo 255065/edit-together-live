@@ -36,17 +36,12 @@ function Nav() {
           <Link to="/integrations" className="hover:text-neutral-950">Integrations</Link>
           <a href="#pricing" className="hover:text-neutral-950">Pricing</a>
         </nav>
-        <div className="flex items-center gap-3">
-          <Link to="/login" className="text-[13.5px] text-neutral-600 hover:text-neutral-950">
-            Log in
-          </Link>
-          <Link
-            to="/signup"
-            className="rounded-md bg-neutral-950 px-3.5 py-1.5 text-[13px] font-medium text-white"
-          >
-            Start free trial
-          </Link>
-        </div>
+        <Link
+          to="/signup"
+          className="rounded-md bg-neutral-950 px-3.5 py-1.5 text-[13px] font-medium text-white"
+        >
+          Get started
+        </Link>
       </div>
     </header>
   );
@@ -88,14 +83,8 @@ function Hero() {
               to="/signup"
               className="inline-flex items-center gap-2 rounded-lg bg-neutral-950 px-6 py-3 text-[14.5px] font-medium text-white"
             >
-              Start free trial →
+              Get started →
             </Link>
-            <a
-              href="#how-it-works"
-              className="inline-flex items-center gap-2 rounded-lg border border-neutral-200 bg-white px-5 py-3 text-[14.5px] text-neutral-950"
-            >
-              How it works ↓
-            </a>
           </div>
           <p className="mt-5 text-[12.5px] text-neutral-500">
             Works with Garmin, Apple Watch, Polar, COROS, Suunto and Wahoo — anything that auto-syncs to Strava.
