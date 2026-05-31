@@ -86,6 +86,12 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "EvolveRun — Adaptive AI endurance coach" },
+      { name: "description", content: "Live Edit Studio allows real-time collaborative website editing and deployment." },
+      { property: "og:description", content: "Live Edit Studio allows real-time collaborative website editing and deployment." },
+      { name: "twitter:description", content: "Live Edit Studio allows real-time collaborative website editing and deployment." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/3d7d4b5c-ca11-4300-8326-7beaec6edb98/id-preview-3cd62d10--2d78561c-6a91-423d-a9ea-1a35ac0f9cdf.lovable.app-1780235716928.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/3d7d4b5c-ca11-4300-8326-7beaec6edb98/id-preview-3cd62d10--2d78561c-6a91-423d-a9ea-1a35ac0f9cdf.lovable.app-1780235716928.png" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
