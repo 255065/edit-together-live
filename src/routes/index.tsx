@@ -17,7 +17,7 @@ function LandingPage() {
   );
 }
 
-function Brandmark({ className = "h-6 w-6" }: { className?: string }) {
+function Brandmark({ className = "h-4 w-4" }: { className?: string }) {
   return (
     <img src={evrLogo} alt="EvolveRun" className={`${className} object-contain`} />
   );
