@@ -47,6 +47,18 @@ function TrainingPage() {
   const navigate = useNavigate();
   const [email, setEmail] = useState<string | null>(null);
   const [checking, setChecking] = useState(true);
+  const [weekOffset, setWeekOffset] = useState(0);
+
+  const weekLabel = (() => {
+    const base = new Date(2026, 4, 20); // anchor: Mon 20 May
+    const start = new Date(base);
+    start.setDate(base.getDate() + weekOffset * 7);
+    const end = new Date(start);
+    end.setDate(start.getDate() + 6);
+    const fmt = (d: Date) =>
+      d.toLocaleDateString("en-GB", { day: "numeric", month: "short" });
+    return `${fmt(start)} — ${fmt(end)}`;
+  })();
 
   useEffect(() => {
     const { data: sub } = supabase.auth.onAuthStateChange((_event, session) => {
@@ -104,8 +116,34 @@ function TrainingPage() {
       <main className="mx-auto max-w-[1100px] px-8 pt-14 pb-24">
         <div className="flex items-end justify-between gap-6">
           <div>
-            <div className="font-mono text-[11px] uppercase tracking-[0.18em] text-neutral-500">
-              This week · 20 — 26 May
+            <div className="flex items-center gap-3">
+              <div className="font-mono text-[11px] uppercase tracking-[0.18em] text-neutral-500">
+                {weekOffset === 0 ? "This week" : weekOffset === -1 ? "Last week" : weekOffset === 1 ? "Next week" : `Week ${weekOffset > 0 ? "+" : ""}${weekOffset}`} · {weekLabel}
+              </div>
+              <div className="flex items-center gap-1">
+                <button
+                  onClick={() => setWeekOffset((w) => w - 1)}
+                  aria-label="Previous week"
+                  className="flex h-6 w-6 items-center justify-center rounded-md border border-neutral-300 bg-white text-neutral-700 hover:bg-neutral-50"
+                >
+                  ‹
+                </button>
+                <button
+                  onClick={() => setWeekOffset((w) => w + 1)}
+                  aria-label="Next week"
+                  className="flex h-6 w-6 items-center justify-center rounded-md border border-neutral-300 bg-white text-neutral-700 hover:bg-neutral-50"
+                >
+                  ›
+                </button>
+                {weekOffset !== 0 && (
+                  <button
+                    onClick={() => setWeekOffset(0)}
+                    className="ml-1 rounded-md px-2 py-0.5 text-[11px] font-medium text-neutral-600 hover:text-neutral-950"
+                  >
+                    Today
+                  </button>
+                )}
+              </div>
             </div>
             <h1 className="evr-headline mt-3 text-[56px] leading-[1] tracking-[-0.03em]">
               Training plan
