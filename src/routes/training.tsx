@@ -104,8 +104,34 @@ function TrainingPage() {
       <main className="mx-auto max-w-[1100px] px-8 pt-14 pb-24">
         <div className="flex items-end justify-between gap-6">
           <div>
-            <div className="font-mono text-[11px] uppercase tracking-[0.18em] text-neutral-500">
-              This week · 20 — 26 May
+            <div className="flex items-center gap-3">
+              <div className="font-mono text-[11px] uppercase tracking-[0.18em] text-neutral-500">
+                {weekOffset === 0 ? "This week" : weekOffset === -1 ? "Last week" : weekOffset === 1 ? "Next week" : `Week ${weekOffset > 0 ? "+" : ""}${weekOffset}`} · {weekLabel}
+              </div>
+              <div className="flex items-center gap-1">
+                <button
+                  onClick={() => setWeekOffset((w) => w - 1)}
+                  aria-label="Previous week"
+                  className="flex h-6 w-6 items-center justify-center rounded-md border border-neutral-300 bg-white text-neutral-700 hover:bg-neutral-50"
+                >
+                  ‹
+                </button>
+                <button
+                  onClick={() => setWeekOffset((w) => w + 1)}
+                  aria-label="Next week"
+                  className="flex h-6 w-6 items-center justify-center rounded-md border border-neutral-300 bg-white text-neutral-700 hover:bg-neutral-50"
+                >
+                  ›
+                </button>
+                {weekOffset !== 0 && (
+                  <button
+                    onClick={() => setWeekOffset(0)}
+                    className="ml-1 rounded-md px-2 py-0.5 text-[11px] font-medium text-neutral-600 hover:text-neutral-950"
+                  >
+                    Today
+                  </button>
+                )}
+              </div>
             </div>
             <h1 className="evr-headline mt-3 text-[56px] leading-[1] tracking-[-0.03em]">
               Training plan
