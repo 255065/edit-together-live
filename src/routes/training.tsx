@@ -47,6 +47,18 @@ function TrainingPage() {
   const navigate = useNavigate();
   const [email, setEmail] = useState<string | null>(null);
   const [checking, setChecking] = useState(true);
+  const [weekOffset, setWeekOffset] = useState(0);
+
+  const weekLabel = (() => {
+    const base = new Date(2026, 4, 20); // anchor: Mon 20 May
+    const start = new Date(base);
+    start.setDate(base.getDate() + weekOffset * 7);
+    const end = new Date(start);
+    end.setDate(start.getDate() + 6);
+    const fmt = (d: Date) =>
+      d.toLocaleDateString("en-GB", { day: "numeric", month: "short" });
+    return `${fmt(start)} — ${fmt(end)}`;
+  })();
 
   useEffect(() => {
     const { data: sub } = supabase.auth.onAuthStateChange((_event, session) => {
