@@ -638,6 +638,7 @@ function ChatDemo() {
         @keyframes evr-draw { to { stroke-dashoffset: 0; } }
         @keyframes evr-pop { 0% { opacity: 0; transform: scale(0.2); transform-origin: center; } 100% { opacity: 1; transform: scale(1); } }
         @keyframes evr-fade-up { 0% { opacity: 0; transform: translate(-50%, calc(-50% + 8px)); } 100% { opacity: 1; transform: translate(-50%, -50%); } }
+        @keyframes evr-rise { 0% { opacity: 0; transform: translateY(8px); } 100% { opacity: 1; transform: translateY(0); } }
       `}</style>
     </section>
   );
