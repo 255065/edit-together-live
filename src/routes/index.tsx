@@ -360,6 +360,55 @@ function Footer() {
   );
 }
 
+function useInView<T extends HTMLElement>(threshold = 0.2) {
+  const ref = useRef<T | null>(null);
+  const [inView, setInView] = useState(false);
+  useEffect(() => {
+    if (!ref.current || inView) return;
+    const el = ref.current;
+    const io = new IntersectionObserver(
+      ([e]) => {
+        if (e.isIntersecting) {
+          setInView(true);
+          io.disconnect();
+        }
+      },
+      { threshold },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, [inView, threshold]);
+  return { ref, inView };
+}
+
+function useTypewriter(text: string, start: boolean, speed = 22) {
+  const [out, setOut] = useState("");
+  useEffect(() => {
+    if (!start) return;
+    setOut("");
+    let i = 0;
+    const id = setInterval(() => {
+      i++;
+      setOut(text.slice(0, i));
+      if (i >= text.length) clearInterval(id);
+    }, speed);
+    return () => clearInterval(id);
+  }, [text, start, speed]);
+  return out;
+}
+
+function useSteppedTimer(start: boolean, steps: number[]) {
+  const [step, setStep] = useState(0);
+  useEffect(() => {
+    if (!start) return;
+    const timers = steps.map((delay, i) =>
+      setTimeout(() => setStep((s) => Math.max(s, i + 1)), delay),
+    );
+    return () => timers.forEach(clearTimeout);
+  }, [start, steps]);
+  return step;
+}
+
 function ChatDemo() {
   const months = [
     { m: "Jan", pace: "5:23/km", bpm: 149, x: 12, y: 70 },
@@ -367,9 +416,36 @@ function ChatDemo() {
     { m: "Mar", pace: "5:08/km", bpm: 145, x: 88, y: 28 },
   ];
 
+  const promptText =
+    "Compare my easy running pace trend this year with Jan, Feb, March pace and easy HR.";
+  const answerText =
+    "Your easy pace trend is moving the right way: from roughly 5:23/km in January to 5:08/km in March, while easy HR fell from about 149 bpm to 145 bpm, which suggests improving aerobic efficiency.";
+
+  const { ref, inView } = useInView<HTMLDivElement>(0.15);
+
+  // Stage timings (ms after inView)
+  // 0: idle, 1: prompt typing done, 2: thinking pill, 3: tools card, 4: chart card, 5: final answer
+  const typedPrompt = useTypewriter(promptText, inView, 20);
+  const promptDone = inView && typedPrompt.length === promptText.length;
+
+  const stage = useSteppedTimer(promptDone, [400, 1600, 2800, 4400]);
+  // stage 1: thinking, 2: tools, 3: chart, 4: answer
+
+  const typedAnswer = useTypewriter(answerText, stage >= 4, 14);
+
+  const tools = [
+    { source: "STRAVA", name: "get-strava-easy-runs" },
+    { source: "STRAVA", name: "compare-strava-periods" },
+    { source: "STRAVA", name: "chart-easy-pace-trend" },
+    { source: "COROS", name: "get-coros-training-zones" },
+  ];
+
   return (
     <section className="mx-auto max-w-[760px] px-6 pb-24">
-      <div className="rounded-[28px] border border-neutral-200 bg-[#f5f0e8] p-3 shadow-[0_24px_60px_-30px_rgba(60,40,20,0.35)]">
+      <div
+        ref={ref}
+        className="rounded-[28px] border border-neutral-200 bg-[#f5f0e8] p-3 shadow-[0_24px_60px_-30px_rgba(60,40,20,0.35)]"
+      >
         {/* window chrome */}
         <div className="relative flex items-center justify-center rounded-t-[20px] bg-[#ece6dc] px-4 py-2.5">
           <div className="absolute left-4 flex gap-1.5">
@@ -382,15 +458,18 @@ function ChatDemo() {
 
         <div className="space-y-3 p-4 md:p-6">
           {/* greeting */}
-          <div className="flex items-center justify-center gap-3 py-3">
+          <div className="flex items-center justify-center gap-3 py-3 animate-fade-in">
             <ClaudeStar />
             <span className="evr-headline text-[28px] tracking-[-0.02em]">Afternoon</span>
           </div>
 
-          {/* user prompt card */}
-          <div className="rounded-2xl border border-neutral-200/80 bg-white p-5">
-            <p className="text-[14.5px] leading-relaxed text-neutral-900">
-              Compare my easy running pace trend this year with Jan, Feb, March pace and easy HR.
+          {/* user prompt card — typewriter */}
+          <div className="rounded-2xl border border-neutral-200/80 bg-white p-5 animate-fade-in">
+            <p className="min-h-[2.6em] text-[14.5px] leading-relaxed text-neutral-900">
+              {typedPrompt}
+              {!promptDone && (
+                <span className="ml-0.5 inline-block h-[1.05em] w-[2px] -mb-[2px] animate-pulse bg-neutral-900 align-middle" />
+              )}
             </p>
             <div className="mt-5 flex items-center justify-between">
               <span className="text-[12.5px] text-neutral-500">Sonnet 4.6</span>
@@ -403,113 +482,167 @@ function ChatDemo() {
           </div>
 
           {/* thinking pill */}
-          <div className="rounded-full border border-neutral-200/80 bg-[#ece6dc]/60 px-4 py-2 text-[12.5px] text-neutral-600">
-            Grouping easy runs by month and comparing pace to HR efficiency<span className="ml-1 tracking-widest text-neutral-400">. . .</span>
-          </div>
-
-          {/* tools card */}
-          <div className="rounded-2xl border border-neutral-200/80 bg-white p-5">
-            <div className="mb-4 flex items-center gap-2">
-              <span className="h-2 w-2 rounded-full bg-[#cc785c]" />
-              <span className="font-mono text-[11px] tracking-[0.18em] text-neutral-700">USING CHIRONA TOOLS</span>
-              <span className="ml-1 rounded-full border border-[#cc785c]/40 px-2 py-[2px] font-mono text-[10px] tracking-[0.15em] text-[#cc785c]">
-                CHIRONA
+          {stage >= 1 && (
+            <div className="rounded-full border border-neutral-200/80 bg-[#ece6dc]/60 px-4 py-2 text-[12.5px] text-neutral-600 animate-fade-in">
+              Grouping easy runs by month and comparing pace to HR efficiency
+              <span className="ml-1 inline-flex gap-[3px] align-middle">
+                <span className="h-1 w-1 animate-bounce rounded-full bg-neutral-500 [animation-delay:-0.3s]" />
+                <span className="h-1 w-1 animate-bounce rounded-full bg-neutral-500 [animation-delay:-0.15s]" />
+                <span className="h-1 w-1 animate-bounce rounded-full bg-neutral-500" />
               </span>
             </div>
+          )}
 
-            <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2">
-              <ToolChip source="STRAVA" name="get-strava-easy-runs" />
-              <ToolChip source="STRAVA" name="compare-strava-periods" />
-              <ToolChip source="STRAVA" name="chart-easy-pace-trend" />
-              <ToolChip source="COROS" name="get-coros-training-zones" />
+          {/* tools card */}
+          {stage >= 2 && (
+            <div className="rounded-2xl border border-neutral-200/80 bg-white p-5 animate-fade-in">
+              <div className="mb-4 flex items-center gap-2">
+                <span className="h-2 w-2 rounded-full bg-[#cc785c] animate-pulse" />
+                <span className="font-mono text-[11px] tracking-[0.18em] text-neutral-700">USING CHIRONA TOOLS</span>
+                <span className="ml-1 rounded-full border border-[#cc785c]/40 px-2 py-[2px] font-mono text-[10px] tracking-[0.15em] text-[#cc785c]">
+                  CHIRONA
+                </span>
+              </div>
+
+              <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2">
+                {tools.map((t, i) => (
+                  <div
+                    key={t.name}
+                    className="animate-fade-in opacity-0"
+                    style={{
+                      animationDelay: `${i * 220}ms`,
+                      animationFillMode: "forwards",
+                    }}
+                  >
+                    <ToolChip source={t.source} name={t.name} />
+                  </div>
+                ))}
+              </div>
+
+              <p className="mt-5 text-[13.5px] leading-relaxed text-neutral-700">
+                Claude is filtering your easy runs by month, charting pace against easy-run HR,
+                and using your zones to spot whether efficiency is improving.
+              </p>
             </div>
-
-            <p className="mt-5 text-[13.5px] leading-relaxed text-neutral-700">
-              Claude is filtering your easy runs by month, charting pace against easy-run HR,
-              and using your zones to spot whether efficiency is improving.
-            </p>
-          </div>
+          )}
 
           {/* chart card */}
-          <div className="rounded-2xl border border-neutral-200/80 bg-white p-5">
-            <div className="flex items-center justify-between text-[12px] text-neutral-500">
-              <span>Easy runs</span>
-              <span>Jan – March</span>
-              <span>Pace vs HR</span>
-            </div>
+          {stage >= 3 && (
+            <div className="rounded-2xl border border-neutral-200/80 bg-white p-5 animate-fade-in">
+              <div className="flex items-center justify-between text-[12px] text-neutral-500">
+                <span>Easy runs</span>
+                <span>Jan – March</span>
+                <span>Pace vs HR</span>
+              </div>
 
-            <div className="relative mt-6 h-[180px]">
-              {/* grid lines */}
-              <div className="absolute inset-x-0 top-0 h-px bg-neutral-200" />
-              <div className="absolute inset-x-0 top-1/2 h-px bg-neutral-200" />
-              <div className="absolute inset-x-0 bottom-0 h-px bg-neutral-200" />
+              <div className="relative mt-6 h-[180px]">
+                <div className="absolute inset-x-0 top-0 h-px bg-neutral-200" />
+                <div className="absolute inset-x-0 top-1/2 h-px bg-neutral-200" />
+                <div className="absolute inset-x-0 bottom-0 h-px bg-neutral-200" />
 
-              {/* trend line */}
-              <svg className="absolute inset-0 h-full w-full" viewBox="0 0 100 100" preserveAspectRatio="none">
-                <polyline
-                  points={months.map((p) => `${p.x},${p.y}`).join(" ")}
-                  fill="none"
-                  stroke="#cc785c"
-                  strokeWidth="0.8"
-                  strokeLinecap="round"
-                />
+                <svg className="absolute inset-0 h-full w-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+                  <polyline
+                    points={months.map((p) => `${p.x},${p.y}`).join(" ")}
+                    fill="none"
+                    stroke="#cc785c"
+                    strokeWidth="0.8"
+                    strokeLinecap="round"
+                    strokeDasharray="200"
+                    strokeDashoffset="200"
+                    style={{ animation: "evr-draw 1.4s ease-out 0.2s forwards" }}
+                  />
+                  {months.map((p, i) => (
+                    <circle
+                      key={i}
+                      cx={p.x}
+                      cy={p.y}
+                      r="1.4"
+                      fill="#cc785c"
+                      opacity="0"
+                      style={{ animation: `evr-pop 0.4s ease-out ${0.5 + i * 0.35}s forwards` }}
+                    />
+                  ))}
+                </svg>
+
                 {months.map((p, i) => (
-                  <circle key={i} cx={p.x} cy={p.y} r="1.4" fill="#cc785c" />
+                  <div
+                    key={i}
+                    className="absolute flex flex-col items-center opacity-0"
+                    style={{
+                      left: `${p.x}%`,
+                      top: `${p.y}%`,
+                      transform: "translate(-50%,-50%)",
+                      animation: `evr-fade-up 0.5s ease-out ${0.6 + i * 0.35}s forwards`,
+                    }}
+                  >
+                    <div className="absolute -top-6 whitespace-nowrap text-[12px] font-medium text-neutral-700">
+                      {p.pace}
+                    </div>
+                    <div className="h-[58px] w-[34px] rounded-md bg-[#8aa9ff]/80" />
+                    <div className="absolute top-[60%] whitespace-nowrap text-[12px] text-neutral-700">
+                      {p.bpm} bpm
+                    </div>
+                  </div>
                 ))}
-              </svg>
+              </div>
 
-              {/* bars + labels */}
-              {months.map((p, i) => (
-                <div
-                  key={i}
-                  className="absolute flex flex-col items-center"
-                  style={{ left: `${p.x}%`, top: `${p.y}%`, transform: "translate(-50%,-50%)" }}
-                >
-                  <div className="absolute -top-6 whitespace-nowrap text-[12px] font-medium text-neutral-700">
-                    {p.pace}
+              <div className="mt-4 flex justify-between px-1 text-[13px] text-neutral-700">
+                {months.map((p) => (
+                  <span key={p.m}>{p.m}</span>
+                ))}
+              </div>
+
+              <div className="mt-6 grid grid-cols-1 gap-2.5 sm:grid-cols-2">
+                {[
+                  ["JAN", "5:23/km at 149 bpm"],
+                  ["FEB", "5:17/km at 147 bpm"],
+                  ["MAR", "5:08/km at 145 bpm"],
+                  ["TREND", "Faster pace, lower easy HR"],
+                ].map(([l, v], i) => (
+                  <div
+                    key={l}
+                    className="opacity-0"
+                    style={{
+                      animation: `evr-fade-up 0.45s ease-out ${1.6 + i * 0.12}s forwards`,
+                    }}
+                  >
+                    <MetricCard label={l} value={v} />
                   </div>
-                  <div className="h-[58px] w-[34px] rounded-md bg-[#8aa9ff]/80" />
-                  <div className="absolute top-[60%] whitespace-nowrap text-[12px] text-neutral-700">
-                    {p.bpm} bpm
-                  </div>
-                </div>
-              ))}
+                ))}
+              </div>
+
+              <InsightBlock label="WHAT CHANGED">
+                Your easy-run pace improved each month while average easy HR dropped, which
+                usually points to stronger aerobic efficiency rather than simply running harder.
+              </InsightBlock>
+              <InsightBlock label="HOW CLAUDE KNOWS">
+                It grouped easy runs using your training zones, compared month-by-month pace
+                and HR, and then summarized the direction of change for you.
+              </InsightBlock>
             </div>
+          )}
 
-            <div className="mt-4 flex justify-between px-1 text-[13px] text-neutral-700">
-              {months.map((p) => (
-                <span key={p.m}>{p.m}</span>
-              ))}
-            </div>
-
-            {/* metric grid */}
-            <div className="mt-6 grid grid-cols-1 gap-2.5 sm:grid-cols-2">
-              <MetricCard label="JAN" value="5:23/km at 149 bpm" />
-              <MetricCard label="FEB" value="5:17/km at 147 bpm" />
-              <MetricCard label="MAR" value="5:08/km at 145 bpm" />
-              <MetricCard label="TREND" value="Faster pace, lower easy HR" />
-            </div>
-
-            <InsightBlock label="WHAT CHANGED">
-              Your easy-run pace improved each month while average easy HR dropped, which
-              usually points to stronger aerobic efficiency rather than simply running harder.
-            </InsightBlock>
-            <InsightBlock label="HOW CLAUDE KNOWS">
-              It grouped easy runs using your training zones, compared month-by-month pace
-              and HR, and then summarized the direction of change for you.
-            </InsightBlock>
-          </div>
-
-          <p className="px-1 pt-2 text-[13.5px] leading-relaxed text-neutral-700">
-            Your easy pace trend is moving the right way: from roughly 5:23/km in January
-            to 5:08/km in March, while easy HR fell from about 149 bpm to 145 bpm, which
-            suggests improving aerobic efficiency.
-          </p>
+          {/* final answer — typewriter */}
+          {stage >= 4 && (
+            <p className="min-h-[4em] px-1 pt-2 text-[13.5px] leading-relaxed text-neutral-700">
+              {typedAnswer}
+              {typedAnswer.length < answerText.length && (
+                <span className="ml-0.5 inline-block h-[1.05em] w-[2px] -mb-[2px] animate-pulse bg-neutral-700 align-middle" />
+              )}
+            </p>
+          )}
         </div>
       </div>
+
+      <style>{`
+        @keyframes evr-draw { to { stroke-dashoffset: 0; } }
+        @keyframes evr-pop { 0% { opacity: 0; transform: scale(0.2); transform-origin: center; } 100% { opacity: 1; transform: scale(1); } }
+        @keyframes evr-fade-up { 0% { opacity: 0; transform: translate(-50%, calc(-50% + 8px)); } 100% { opacity: 1; transform: translate(-50%, -50%); } }
+      `}</style>
     </section>
   );
 }
+
 
 function ClaudeStar() {
   return (
