@@ -603,7 +603,7 @@ function ChatDemo() {
                     key={l}
                     className="opacity-0"
                     style={{
-                      animation: `evr-fade-up 0.45s ease-out ${1.6 + i * 0.12}s forwards`,
+                      animation: `evr-rise 0.45s ease-out ${1.6 + i * 0.12}s forwards`,
                     }}
                   >
                     <MetricCard label={l} value={v} />
